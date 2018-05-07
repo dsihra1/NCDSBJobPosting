@@ -1,0 +1,404 @@
+﻿@model CommunityProject_ProjectUnity.Models.Posting
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2 class="page-header">Create Posting</h2>
+<link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-3.1.1.min.js"></script>
+<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+<link href="~/Content/jquery-ui-timepicker-addon.min.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-ui-timepicker-addon.min.js"></script>
+<script src="@Url.Content("~/Scripts/jquery.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery-ui-1.11.4.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/bootstrap.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/moment.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/bootstrap-datetimepicker.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.bootstrap-duallistbox.js")" type="text/javascript"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+
+
+
+@*<link href="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.3/css/bootstrap.min.css"
+      rel="stylesheet" type="text/css" />*@
+
+
+
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.3/js/bootstrap.min.js"></script>
+<link href="http://cdn.rawgit.com/davidstutz/bootstrap-multiselect/master/dist/css/bootstrap-multiselect.css"
+      rel="stylesheet" type="text/css" />
+<script src="http://cdn.rawgit.com/davidstutz/bootstrap-multiselect/master/dist/js/bootstrap-multiselect.js"
+        type="text/javascript"></script>
+
+@*<script type="text/javascript">*@
+
+
+    @*$(function () {
+       
+        if ($("#CityID").val() == '0') {
+            var cityDefaultValue = "<option value='0' >--Select a City--</option>"
+            $("#SchoolID").html(cityDefaultValue).show();
+        }
+         $("#CityID").change(function () {
+            var selectedItemValue = $(this).val();
+
+            var ddlSchools = $("#SchoolID");
+            $.ajax({
+                cache: false,
+                type: "GET",
+                url: '@Url.Action("GetSchoolByCityID", "Postings")',
+                data: { "ID": selectedItemValue },
+                success: function (data) {
+                    ddlSchools.html('');
+                    $.each(data, function (id, option) {
+                        ddlSchools.append($('<option></option>').val(option.id).html(option.name));
+                    });
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Found error.');
+                }
+            });
+        });
+         if ($("#PositionType").val() == '0') {
+            var jobDefaultValue = "<optipn value='0' >--Select a Job Type--</option>"
+            //$("#JobTypeID").html(jobDefaultValue).show();
+        }
+        $("#PositionType").change(function () {
+            var selectedItemValue = $(this).val();
+
+            var ddlJobcode = $("#JobTypeID");
+            $.ajax({
+                cache: false,
+                type: "GET",
+                url: '@Url.Action("GetJobCodeByPositionType", "Positions")',
+                data: { "ID": selectedItemValue },
+                success: function (data) {
+                    ddlJobcode.html('');
+                    $.each(data, function (id, option) {
+
+                        ddlJobcode.append($('<option></option>').val(option.id).html(option.name));
+                    });
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Found error.');
+                }
+            });
+        });
+        $('#JobTypeID').change(function () {
+            var selectedItemValue = $(this).val();
+
+            var ddlPosition = $('#PositionID');
+            $.ajax({
+                cache: false,
+                type: "GET",
+                url: '@Url.Action("GetPositionByJobCode", "Positions")',
+                data: { "ID": selectedItemValue },
+                success: function (data) {
+                    ddlPosition.html('');
+                    $.each(data, function (id, option) {
+                        ddlPosition.append($('<option></option>').val(option.id).html(option.name));
+                    });
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Found error.');
+                }
+            });
+        });
+        
+        if (navigator.userAgent.indexOf('Chrome') != -1) {
+            $('input[type=date]').on('click', function (event) {
+                event.preventDefault();
+            });
+        }
+        $(document).on('click input', 'input[type="date"], input[type="text"].date-picker', function (e) {
+            var $this = $(this);
+            $this.prop('type', 'text').datepicker({
+                showOtherMonths: true,
+                selectOtherMonths: true,
+                showButtonPanel: true,
+                changeMonth: true,
+                changeYear: true,
+                dateFormat: 'yy-mm-dd',
+                showWeek: true,
+                firstDay: 1
+            });
+
+            setTimeout(function () {
+                $this.datepicker('show');
+            }, 1);
+        });
+    });*@
+@*</script>*@
+
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+         @Html.HiddenFor(model => model.PositionID)
+          @Html.HiddenFor(model => model.PositionType)
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-10 col-xs-12">
+               
+                <div class="form-group">
+                    @Html.LabelFor(model => model.PositionID, "Position", htmlAttributes: new { @class = "control-label col-lg-3 col-md-3 col-sm-8 col-xs-12" })
+                    <div class="col-lg-5 col-md-5 col-sm-10 col-xs-12">
+                        @Html.DropDownList("PositionID", null, htmlAttributes: new { disabled = "disabled", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.PositionID, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-lg-3 col-md-3 col-sm-8 col-xs-12" })
+                    <div class="col-lg-5 col-md-5 col-sm-10 col-xs-12">
+                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-lg-3 col-md-3 col-sm-8 col-xs-12" })
+                    <div class="col-lg-5 col-md-5 col-sm-10 col-xs-12">
+                        @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control date-time-picker col-lg-3 col-md-3 col-sm-8 col-xs-12" } })
+                        @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ClosingDate, htmlAttributes: new { @class = "control-label col-lg-3 col-md-3 col-sm-8 col-xs-12" })
+                    <div class="col-lg-5 col-md-5 col-sm-10 col-xs-12">
+                        @Html.EditorFor(model => model.ClosingDate, new { htmlAttributes = new { @class = "form-control date-time-picker col-lg-3 col-md-3 col-sm-8 col-xs-12" } })
+                        @Html.ValidationMessageFor(model => model.ClosingDate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-lg-3 col-md-3 col-sm-8 col-xs-12" })
+                    <div class="col-lg-5 col-md-5 col-sm-10 col-xs-12">
+                        @Html.TextAreaFor(model => model.Description, htmlAttributes: new { @class = "form-control", @rows = 5, style = "width: 700px;, control-label" })
+                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-lg-6 col-md-6 col-sm-10 col-xs-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.status, "Status", htmlAttributes: new { @class = "control-label col-lg-3 col-md-3 col-sm-8 col-xs-12" })
+                    <div class="col-lg-5 col-md-5 col-sm-10 col-xs-12">
+                        @Html.DropDownList("status", null, "Select a status", htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.status, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Openings, htmlAttributes: new { @class = "control-label col-lg-3 col-md-3 col-sm-8 col-xs-12" })
+                    <div class="col-lg-5 col-md-5 col-sm-10 col-xs-12">
+                        @Html.EditorFor(model => model.Openings, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Openings, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.FTE, htmlAttributes: new { @class = "control-label col-lg-3 col-md-3 col-sm-8 col-xs-12" })
+                    <div class="col-lg-5 col-md-5 col-sm-10 col-xs-12">
+                        @Html.EditorFor(model => model.FTE, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.FTE, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.JobStartDate, htmlAttributes: new { @class = "control-label col-lg-3 col-md-3 col-sm-8 col-xs-12" })
+                    <div class="col-lg-5 col-md-5 col-sm-10 col-xs-12">
+                        @Html.EditorFor(model => model.JobStartDate, new { htmlAttributes = new { @class = "form-control date-time-picker col-lg-3 col-md-3 col-sm-8 col-xs-12" } })
+                        @Html.ValidationMessageFor(model => model.JobStartDate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.JobEndDate, htmlAttributes: new { @class = "control-label col-lg-3 col-md-3 col-sm-8 col-xs-12" })
+                    <div class="col-lg-5 col-md-5 col-sm-10 col-xs-12">
+                        @Html.EditorFor(model => model.JobEndDate, new { htmlAttributes = new { @class = "form-control date-time-picker col-lg-3 col-md-3 col-sm-8 col-xs-12" } })
+                        @Html.ValidationMessageFor(model => model.JobEndDate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.SalaryType, htmlAttributes: new { @class = "control-label col-lg-3 col-md-3 col-sm-8 col-xs-12" })
+                    <div class="col-lg-5 col-md-5 col-sm-10 col-xs-12">
+                        @Html.EditorFor(model => model.SalaryType, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.SalaryType, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Salary, htmlAttributes: new { @class = "control-label col-lg-3 col-md-3 col-sm-8 col-xs-12" })
+                    <div class="col-lg-5 col-md-5 col-sm-10 col-xs-12">
+                        @Html.EditorFor(model => model.Salary, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Salary, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6 col-md-6 col-sm-10 col-xs-12">
+                <div class="form-group">
+                    <label class="control-label col-lg-3 col-md-3 col-sm-8 col-xs-12" id="availSchool">Available Schools</label><br />
+                    <div class="col-lg-5 col-md-5 col-sm-10 col-xs-12">
+                        @Html.ListBox("availSchools", (MultiSelectList)ViewBag.availSchools, new { @class = "form-control", style = "width: 700px;, control-label" })
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <button type="button" id="btnLeftSchool" class="btn  btn-primary  btn-group-lg col-md-offset-10">
+                                <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
+                            </button>
+                        </div>
+                        <div class="form-group">
+                            <button type="button" id="btnRightSchool" class="btn btn-default btn-group-lg col-md-offset-10">
+                                <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-lg-3 col-md-3 col-sm-8 col-xs-12" id="availlabel">Available Skills</label><br />
+                    <div class="col-lg-5 col-md-5 col-sm-10 col-xs-12">
+                        @Html.ListBox("availOptions", (MultiSelectList)ViewBag.availOpts, new { @class = "form-control", style = "width: 700px;, control-label" })
+                    </div>    
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <button type="button" id="btnLeft" class="btn  btn-primary  btn-group-lg col-md-offset-10">
+                                <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
+                            </button>
+                        </div>
+                        <div class="form-group">
+                            <button type="button" id="btnRight" class="btn btn-default btn-group-lg col-md-offset-10">
+                                <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+             </div>
+            <div class="col-lg-6 col-md-6 col-sm-10 col-xs-12">
+                <div class="form-group">
+                    <label class="control-label col-lg-3 col-md-3 col-sm-8 col-xs-12" id="selectSchool">Selected Schools</label><br />
+                    <div class="col-lg-5 col-md-5 col-sm-10 col-xs-12">
+                        @Html.ListBox("selectedSchools", (MultiSelectList)ViewBag.selSchools, new { @class = "form-control", style = "width: 700px;, control-label", size = 4 })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <br />
+                    <label class="control-label col-lg-3 col-md-3 col-sm-8 col-xs-12" id="selectlabel">Skills Selected</label><br />
+                    <div class="col-lg-5 col-md-5 col-sm-10 col-xs-12">
+                        @Html.ListBox("selectedOptions", (MultiSelectList)ViewBag.selOpts, new { @class = "form-control", style = "width: 700px;, control-label", size = 4 })
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12 col-md-6 col-sm-10 col-xs-12">
+                <div class="form-group">
+                    <div class="col-md-offset-3">
+                        <input type="submit" id="btnSubmit" value="Create" class="btn btn-primary col-lg-2" />
+                        @Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-primary col-lg-2 col-md-offset-2" })
+                    </div>
+                </div>
+            </div>
+         </div>
+
+           
+
+            <table class="model-state">
+    @foreach (var item in ViewContext.ViewData.ModelState)
+                        {
+                            if (item.Value.Errors.Any())
+                            {
+        <tr>
+            <td><b>@item.Key</b></td>
+            <td>@((item.Value == null || item.Value.Value == null) ? "<null>" : item.Value.Value.RawValue)</td>
+            <td>@(string.Join("; ", item.Value.Errors.Select(x => x.ErrorMessage)))</td>
+        </tr>
+                            }
+                        }
+</table>
+
+            @*<script type="text/javascript">
+                $(function () {
+                    $('#mySkills').multiselect({
+                        includeSelectAllOption: true
+                    });
+                });
+            </script>
+            <script type="text/javascript">
+                $(function () {
+                    $('#myQualifications').multiselect({
+                        includeSelectAllOption: true
+                    });
+                });
+            </script>*@
+            @{
+                ViewBag.Title = "Index";
+            }
+
+            @*<div class="form-group">
+            <label class="control-label col-md-2">Required Qualifications</label>
+            <div class="col-md-offset-2 col-md-10">
+                <table>
+                    <tr>
+                        @{
+                            int cntq = 0;
+                            List<CommunityProject_ProjectUnity.ViewModels.AssignedQualificationVM> qual = ViewBag.Qualifications;
+                            foreach (var q in qual)
+                            {
+                                if (cntq++ % 3 == 0)
+                                {
+                                    @:</tr><tr>
+                                }
+                                @:<td>
+                                    <input type="checkbox"
+                                    name="selectedqualifications"
+                                    value="@q.QualificationID"
+                                    @(Html.Raw(q.Assigned ? "checked=\"checked\"" : "")) />
+                                    @q.QualificationName @:&nbsp;&nbsp;
+                                @: </td>
+                            }
+                            @:</tr>
+                        }
+                    </table>
+                </div>
+            </div>*@
+
+        </div>
+
+   
+                        }
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+   
+    @Scripts.Render("~/bundles/PostingListbox")
+    <script src="~/Scripts/PostingCreate.js"></script>
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+    <script src="~/Scripts/jquery-ui-timepicker-addon.min.js"></script>
+    <script type="text/javascript">
+                        $(document).ready(function () {
+                            $(function () {
+                                $(".date-time-picker").datetimepicker({
+                                    changeMonth: true,
+                                    changeYear: true,
+                                    yearRange: "-100:+0",
+                                    dateFormat: 'yy-mm-dd',
+                                    controlType: 'select',
+                                    timeFormat: 'hh:mm TT'
+                                });
+                            });
+
+                            jQuery.validator.methods.date = function (value, element) {
+                                var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+                                if (isChrome) {
+                                    var d = new Date();
+                                    return this.optional(element) || !/Invalid|NaN/.test(new Date(d.toLocaleDateString(value)));
+                                } else {
+                                    return this.optional(element) || !/Invalid|NaN/.test(new Date(value));
+                                }
+                            };
+                        });
+
+    </script>
+}
+

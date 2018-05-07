@@ -1,0 +1,94 @@
+﻿@model CommunityProject_ProjectUnity.Models.Position
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Position Details</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.JobCodeName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.JobCodeName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PositionDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PositionDescription)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PositionSalary)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PositionSalary)
+        </dd>
+
+        
+        <dt>
+            <label> Total Number Of Openings</label>
+        </dt>
+        <dd>
+            @{
+                int openings = 0;
+
+                foreach (var app in Model.Postings)
+                {
+                    int postings = Convert.ToInt32(app.Openings);
+
+                    openings += postings;
+                }
+                @openings;
+            }
+        </dd>
+        <dt> <label>Required Skills/Qualifications</label></dt>
+        <dd>
+            <div class="form-group">
+
+                <div class="col-lg-5 col-md-5 col-sm-10 col-xs-12">
+                    @if (Model.PositionType == "Non-Teaching")
+                    {
+                        <div class="well" id="SkillsList">
+                            @foreach (var skill in Model.Skills)
+                            {
+                                @skill.SkillName<br />
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="well" id="SkillsList">
+                            @foreach (var qual in Model.Qualifications)
+                            {
+                                @qual.Name<br />
+                            }
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

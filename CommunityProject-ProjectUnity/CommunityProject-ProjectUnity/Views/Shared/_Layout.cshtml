@@ -1,0 +1,176 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title -Niagara Catholic School Board Job Site</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <link href="~/Content/Chosen/chosen.min.css" rel="stylesheet" />
+</head>
+<body>
+    @*<div class="navbar navbar-inverse navbar-fixed-top">
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        @Html.ActionLink("Niagara Catholic School Board", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                    </div>
+                    <div class="navbar-collapse collapse">
+                        <ul class="nav navbar-nav">
+                            <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                            <li>@Html.ActionLink("About", "About", "Home")</li>
+                            <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                            <li>@Html.ActionLink("Postings", "Index", "Postings")</li>
+                            <li class="dropdown">
+                                <a href="#" data-toggle="dropdown" class="dropdown-toggle">Admin Menu<b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li>@Html.ActionLink("Applicants", "Index", "Applicants")</li>
+                                    <li>@Html.ActionLink("Positions", "Index", "Positions")</li>
+                                    <li>@Html.ActionLink("Postings", "Index", "Postings")</li>
+                                    <li>@Html.ActionLink("Applications", "Index", "Applications")</li>
+                                    <li class="divider"></li>
+                                    <li>@Html.ActionLink("JobTypes", "Index", "JobTypes")</li>
+
+                                </ul>
+                            </li>
+                        </ul>
+                        @Html.Partial("_LoginPartial")
+                    </div>
+
+                </div>
+            </div>
+            <div class="container body-content">
+                @RenderBody()
+                <hr />
+                <footer>
+                    <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+                </footer>
+            </div>
+
+            @Scripts.Render("~/bundles/jquery")
+            @Scripts.Render("~/bundles/bootstrap")
+            @RenderSection("scripts", required: false)
+        </body>
+        </html>*@
+
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="@Url.Action("Index", "Home")">Niagara Catholic School Board</a>
+            </div>
+              @if (Request.IsAuthenticated)
+              {
+                   if (!User.IsInRole("Admin"))
+             {
+                 <ul class="nav navbar-nav">
+                  <li class="nav-item active"></li>
+                      <li>
+                            <a href="@Url.Action("Index", "Applications")">Submitted Applications</a>
+                        </li>
+                      </ul>
+             }
+              }
+            
+
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+                <ul class="nav navbar-nav">
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li class="nav-item active"></li>
+                        <li>
+                            <a href="@Url.Action("Index", "Postings")">Postings</a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("Index", "Positions")">Positions</a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("Index", "Applications")">Applications</a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("Index", "Qualifications")">Qualifications</a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("Index", "Skills")">Skills</a>
+                        </li>
+                    }
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    @using Microsoft.AspNet.Identity
+                    @if (Request.IsAuthenticated)
+                    {
+                        
+                        <li class="nav-item">
+                            <a href="@Url.Action("SelectedApplications", "Applications")">Selected Applicants</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+                        </li>
+                         if (!User.IsInRole("Admin"))
+                         {
+                             <li class="nav-item">
+                                <a class="nav-link" @Html.ActionLink("Update Profile", "Details", "Applicants")
+                            </li>
+                         }
+                        
+
+                    }
+                    @if(!Request.IsAuthenticated)
+                    {
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Login", "Account")">Login</a>
+                    </li>
+                    
+                    }
+                   
+                    @using Microsoft.AspNet.Identity
+                    @if (Request.IsAuthenticated)
+                    {
+                        using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                        {
+                            @Html.AntiForgeryToken()
+
+                            <ul class="nav navbar-nav navbar-right">
+
+                                <li class="nav-item"><a class="nav-link" href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+                            </ul>
+                        }
+                    }
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        
+        <footer>
+            <div class="line">
+                <p>&copy; @DateTime.Now.Year -Project Unity</p>
+            </div>
+        </footer>
+        
+    </div>
+
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap.min")
+        @Styles.Render("~/Content/datatables")
+        @Scripts.Render("~/bundles/datatables")
+       
+        <script src="~/Scripts/chosen.jquery.min.js"></script>
+        @RenderSection("scripts", required: false)
+</body>
+
+</html>

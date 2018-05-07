@@ -1,0 +1,143 @@
+﻿@model CommunityProject_ProjectUnity.Models.Position
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit Position</h2>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.min.js"></script>
+@*<script type="text/javascript">
+
+        $(function () {
+            if ($("#PositionType").val() == '0') {
+                var jobDefaultValue = "<optipn value='0' >--Select a Job Type--</option>"
+                $("#JobCode").html(jobDefaultValue).show();
+            }
+            $("#PositionType").change(function () {
+                var selectedItemValue = $(this).val();
+
+                var ddlJobcode = $("#JobCode");
+                $.ajax({
+                    cache: false,
+                    type: "GET",
+                    url: '@Url.Action("GetJobCodeByPositionType", "Positions")',
+                    data: { "ID": selectedItemValue },
+                    success: function (data) {
+                        ddlJobcode.html('');
+                        $.each(data, function (id, option) {
+                            ddlJobcode.append($('<option></option>').val(option.id).html(option.name));
+                        });
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert('Found error.');
+                    }
+                });
+            });
+        });
+    </script>*@
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <div class="row">
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.ID)
+            @Html.HiddenFor(model => model.RowVersion)
+            <div class="col-lg-6 col-md-6 col-sm-10 col-xs-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.PositionType, "Job Type", htmlAttributes: new { @class = "control-label col-lg-3 col-md-3 col-sm-8 col-xs-12" })
+                    <div class="col-lg-5 col-md-5 col-sm-10 col-xs-12">
+                        @Html.DropDownList("PositionType", null, "Select the Job Type", htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.PositionType, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.JobCode, htmlAttributes: new { @class = "control-label col-lg-3 col-md-3 col-sm-8 col-xs-12" })
+                    <div class="col-lg-5 col-md-5 col-sm-10 col-xs-12">
+                        @Html.EditorFor(model => model.JobCode, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.JobCode, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-lg-3 col-md-3 col-sm-8 col-xs-12" })
+                    <div class="col-lg-5 col-md-5 col-sm-10 col-xs-12">
+                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-md-6 col-sm-10 col-xs-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.PositionDescription, htmlAttributes: new { @class = "control-label col-lg-3 col-md-3 col-sm-8 col-xs-12" })
+                    <div class="col-lg-5 col-md-5 col-sm-10 col-xs-12">
+                        @Html.TextAreaFor(model => model.PositionDescription, htmlAttributes: new { @class = "form-control", @rows = 5, style = "width: 700px;, control-label" })
+                        @Html.ValidationMessageFor(model => model.PositionDescription, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.PositionSalary, htmlAttributes: new { @class = "control-label col-lg-3 col-md-3 col-sm-8 col-xs-12" })
+                    <div class="col-lg-5 col-md-5 col-sm-10 col-xs-12">
+                        @Html.EditorFor(model => model.PositionSalary, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.PositionSalary, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-horizontal">
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-10 col-xs-12">
+                <div class="form-group">
+                    <label class="control-label col-lg-3 col-md-3 col-sm-8 col-xs-12" id="availlabel">Available Skills/Qualifications:</label><br />
+                    <div class="col-lg-5 col-md-5 col-sm-10 col-xs-12">
+                        @Html.ListBox("availOptions", (MultiSelectList)ViewBag.availOpts, new { @class = "form-control", style = "width: 700px;, control-label" })
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <button type="button" id="btnLeftSkill" class="btn  btn-primary  btn-group-lg col-md-offset-9">
+                                <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
+                            </button>
+                        </div>
+                        <div class="form-group">
+                            <button type="button" id="btnRightSkill" class="btn btn-default btn-group-lg col-md-offset-9">
+                                <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-10 col-xs-12">
+                <div class="form-group">
+                    <label class="control-label col-lg-3 col-md-3 col-sm-8 col-xs-12" id="selectlabel">Skills/Qualifications Assigned:</label><br />
+                    <div class="col-lg-5 col-md-5 col-sm-10 col-xs-12">
+                        @Html.ListBox("selectedOptions", (MultiSelectList)ViewBag.selOpts, new { @class = "form-control", style = "width: 700px;, control-label" })
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-lg-12 col-md-6 col-sm-10 col-xs-12">
+                <div class="form-group">
+                    <div class="col-md-offset-3">
+                        <input type="submit" id="btnPSubmit" value="Save" class="btn btn-primary col-lg-2" />
+                        @Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-primary col-lg-2 col-md-offset-2" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@*<div>
+        @Html.ActionLink("Cancel", "Index")
+    </div>*@
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/PositionSkills")
+}

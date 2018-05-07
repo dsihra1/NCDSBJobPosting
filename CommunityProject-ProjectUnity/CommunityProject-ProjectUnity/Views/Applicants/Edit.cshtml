@@ -1,0 +1,155 @@
+﻿@model CommunityProject_ProjectUnity.Models.Applicant
+@{
+    ViewBag.Title = "Edit Applicant";
+}
+
+<h2>Edit @Model.FullName</h2>
+
+
+@using (Html.BeginForm("Edit", "Applicants", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="row">
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.ID)
+        @Html.HiddenFor(model => model.RowVersion)
+
+        
+
+
+
+        <input type="hidden" name="Email" value="@User.Identity.Name" />
+        <div class="form-group">
+             <div class="col-md-5">
+            <label class="control-label col-md-4">Profile Picture:</label>
+            
+                <input type="file" class="" name="ProfilePicture" /><br />
+            </div>
+        </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-5">
+                @{
+                    if (Model.ApplicantImage != null)
+                    {
+                        string imageBase64 = Convert.ToBase64String(Model.ApplicantImage.imageContent);
+                        string imageSrc = string.Format("data:" + Model.ApplicantImage.imageMimeType + ";base64,{0}", imageBase64);
+                        <img src="@imageSrc" style="max-height: 250px; max-width: 300px" class="img-responsive img-rounded" /><br />
+                        <input type="checkbox" id="chkRemoveImage" name="chkRemoveImage" /> <strong>Check to remove Picture</strong>
+                    }
+                }
+            </div>
+        </div>
+
+
+        </div>
+        <div class="row">
+        <div class="horizontal">
+        <hr />
+
+        <div class="form-group">
+            <div class="col-md-5">
+                @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-4" })
+
+                @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-5">
+                @Html.LabelFor(model => model.MiddleName, htmlAttributes: new { @class = "control-label col-md-4" })
+
+                @Html.EditorFor(model => model.MiddleName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.MiddleName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-5">
+                @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "control-label col-md-4" })
+
+                @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-5">
+                @Html.LabelFor(model => model.Phone, htmlAttributes: new { @class = "control-label col-md-4" })
+
+                @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        
+
+        <div class="form-group">
+            <div class="col-md-5">
+                <label class="control-label col-md-4"> Current Documents:</label>
+
+                @foreach (var doc in Model.Files)
+                {
+                    @doc.fileName <br />
+                }
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-5">
+                <label class="control-label col-md-4">
+                    Additional Uploads:
+                </label>
+                    <input type="file" class="" name="Attachments" multiple="multiple" /><br />
+                </div>
+            </div>
+
+
+        <div class="form-group">
+            <div class="col-md-12">
+            <label class="control-label col-md-2">Aquired Skills</label>
+            
+                <table>
+                    <tr>
+                        @{
+                            int cnt = 0;
+                            List<CommunityProject_ProjectUnity.ViewModels.AssignedSkillVM> skills = ViewBag.Skills;
+                            foreach (var skill in skills)
+                            {
+                                if (cnt++ % 3 == 0)
+                                {
+                                    @:</tr><tr>
+                                }
+                                @:<td>
+                                    <input type="checkbox"
+                                    name="selectedSkills"
+                                    value="@skill.SkillID"
+                                    @(Html.Raw(skill.Assigned ? "checked=\"checked\"" : "")) />
+                                    @skill.SkillName @:&nbsp;&nbsp;
+                                @: </td>
+                            }
+                            @:</tr>
+                        }
+                    </table>
+                </div>
+            </div>
+            <br/>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-primary" /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; @Html.ActionLink("Cancel", "Index")
+            </div>
+        </div>
+    </div>
+    </div>
+}
+
+@*<div>
+    @Html.ActionLink("Cancel", "Index")
+</div>*@
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

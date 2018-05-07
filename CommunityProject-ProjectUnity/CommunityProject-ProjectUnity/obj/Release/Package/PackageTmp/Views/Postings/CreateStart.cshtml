@@ -1,0 +1,175 @@
+﻿@model CommunityProject_ProjectUnity.Models.Position
+
+@{
+    ViewBag.Title = "Create Posting";
+}
+
+<h2>Create Posting</h2>
+<hr />
+<div class="col-lg-10">
+<label class="control-label col-md-5">Click To Upload CSV File To Batch Create Postings</label>
+@using (Html.BeginForm("CSVUpload", "Postings", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    
+    
+    <input type="file" name="FileUpload" class="col-lg-offset-6" />
+    <br />
+    <div class="form-group">
+    <label class="control-label col-md-5">OR Select Position as Template</label>
+    <input type="submit" name="Submit" id="Submit" value="Upload Postings" class="col-lg-offset-6 btn btn-default" />
+    @ViewBag.rowcount
+    @ViewBag.Feedback
+    </div>
+    <br />
+    <br />
+}
+</div>
+<br />
+@*@Html.ActionLink("Click Me", "CSVUpload", null, new { @class = "btn btn-default col-md-offset-5" })*@
+
+
+
+
+@using (Html.BeginForm("Create", "Postings", FormMethod.Get, null))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-10 col-xs-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.PositionType, htmlAttributes: new { @class = "col-lg-3 col-md-3 col-sm-8 col-xs-12" })
+                    <div class="col-lg-5 col-md-5 col-sm-10 col-xs-12">
+                        @Html.DropDownList("PositionType", null, "Select a Position Type", htmlAttributes: new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.JobCode, htmlAttributes: new { @class = "col-lg-3 col-md-3 col-sm-8 col-xs-12" })
+                    <div class="col-lg-5 col-md-5 col-sm-10 col-xs-12">
+                        @Html.DropDownList("JobTypeID", null, "Select a Job Code", htmlAttributes: new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "col-lg-3 col-md-3 col-sm-8 col-xs-12" })
+                    <div class="col-lg-5 col-md-5 col-sm-10 col-xs-12">
+                        @Html.DropDownList("PositionID", null, "Select a Position", htmlAttributes: new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "col-lg-3 col-md-3 col-sm-8 col-xs-12" })
+                    <div class="col-lg-5 col-md-5 col-sm-10 col-xs-12">
+                        <input type="text" class="form-control" id="Name" readonly="readonly" />
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="col-lg-6 col-md-6 col-sm-10 col-xs-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.PositionSalary, htmlAttributes: new { @class = "control-label col-lg-3 col-md-3 col-sm-8 col-xs-12" })
+                    <div class="col-lg-5 col-md-5 col-sm-10 col-xs-12">
+                        <input type="text" class="form-control" id="Salary" readonly="readonly" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.PositionDescription, htmlAttributes: new { @class = "control-label col-lg-3 col-md-3 col-sm-8 col-xs-12" })
+                    <div class="col-lg-5 col-md-5 col-sm-10 col-xs-12">
+                        <div class="well" id="Description"></div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Skills, htmlAttributes: new { @class = "control-label col-lg-3 col-md-3 col-sm-8 col-xs-12" })
+                    <div class="col-lg-5 col-md-5 col-sm-10 col-xs-12">
+                        <div class="well" id="SkillsList"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+
+        <div class="form-group">
+            <div class="col-md-offset-3">
+                <input type="submit" value="Next Step" class="btn btn-primary col-lg-2" />
+                @Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-primary col-lg-2 col-md-offset-2" })
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+
+</div>
+@section Scripts {
+    <script type="text/javascript">
+          if ($("#PositionType").val() == '0') {
+            var jobDefaultValue = "<optipn value='0' >--Select a Job Type--</option>"
+            $("#JobTypeID").html(jobDefaultValue).show();
+        }
+        $("#PositionType").change(function () {
+            var selectedItemValue = $(this).val();
+
+            var ddlJobcode = $("#JobTypeID");
+            $.ajax({
+                cache: false,
+                type: "GET",
+                url: '@Url.Action("GetJobCodeByPositionType", "Positions")',
+                data: { "ID": selectedItemValue },
+                success: function (data) {
+                    ddlJobcode.html('');
+                    $.each(data, function (id, option) {
+
+                        ddlJobcode.append($('<option></option>').val(option.id).html(option.name));
+                    });
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Found error.');
+                }
+            });
+        });
+        $('#JobTypeID').change(function () {
+            var selectedItemValue = $(this).val();
+
+            var ddlPosition = $('#PositionID');
+            $.ajax({
+                cache: false,
+                type: "GET",
+                url: '@Url.Action("GetPositionByJobCode", "Positions")',
+                data: { "ID": selectedItemValue },
+                success: function (data) {
+                    ddlPosition.html("Select a Position");
+                    $.each(data, function (id, option) {
+                        ddlPosition.append($('<option></option>').val(option.id).html(option.name));
+                    });
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Found error.');
+                }
+
+            });
+            
+        });
+        $('#PositionID').blur(function () {
+            $('#Name').val('');
+            $('#Description').empty();
+            $('#Salary').val('');
+            $('#SkillsList').empty();
+            var selectedPosition = $("#PositionID").val();
+            var URL = "/Postings/GetAPosition/" + selectedPosition;
+            $.getJSON(URL, function (data) {
+                if (data != null && !jQuery.isEmptyObject(data)) {
+                    $('#Name').val(data.Name);
+                    $('#Description').html(data.PositionDescription);
+                    $('#Salary').val(data.Salary);
+                    $('#SkillsList').html(data.Assignedskill);
+                };
+            });
+        });
+    </script>
+
+}

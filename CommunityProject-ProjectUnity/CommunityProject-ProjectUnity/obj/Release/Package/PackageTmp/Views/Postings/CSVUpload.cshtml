@@ -1,0 +1,21 @@
+﻿
+@{
+    ViewBag.Title = "CSVUpload";
+}
+
+<h2>CSV Bulk Upload</h2>
+@using (Html.BeginForm("CSVUpload", "Postings", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    <input type="file" name="FileUpload" />
+    <input type="submit" name="Submit" id="Submit" value="Upload" />
+
+    
+   
+    @ViewBag.rowcount <p>Postings</p>
+
+    @ViewBag.Feedback;
+
+}
+
+

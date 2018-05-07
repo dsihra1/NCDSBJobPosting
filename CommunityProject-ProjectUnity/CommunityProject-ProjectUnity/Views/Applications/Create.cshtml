@@ -1,0 +1,127 @@
+﻿@model CommunityProject_ProjectUnity.Models.Application
+
+@{
+    ViewBag.Title = "Create";
+}
+
+
+
+
+@using (Html.BeginForm("Create", "Applications", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="horizontal">
+    <div class="row">
+        <h2>Create Application</h2>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        
+
+        <input type="hidden" name="ApplicantID" value="@ViewBag.ApplicantID" />
+        <input type="hidden" name="PostingID" value="@ViewBag.PostingID" />
+
+        <div class="form-group">
+             <div class="col-lg-6 col-md-6 col-sm-10 col-xs-1">
+                 @Html.LabelFor(model => model.Posting.Name, htmlAttributes: new { @class = "control-label col-lg-3 col-md-3 col-sm-8 col-xs-12" })
+                 <div class="col-lg-5 col-md-5 col-sm-10 col-xs-12">
+                    <label>@ViewBag.PostingName</label>
+                 </div>
+             </div>
+        </div>
+        <div class="form-group">
+            <div class="col-lg-6 col-md-6 col-sm-10 col-xs-12">
+                @Html.LabelFor(model => model.Posting.Schools, htmlAttributes: new { @class = "control-label col-lg-3 col-md-3 col-sm-8 col-xs-12" })
+                <div class="col-lg-9 col-md-5 col-sm-10 col-xs-12">
+                    <div class="well">
+                        @foreach (var school in ViewBag.Schools)
+                        {
+                            @school.Name<br />
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>   
+        <div class="form-group">
+            <div class="col-lg-6 col-md-6 col-sm-10 col-xs-12">
+                @Html.LabelFor(model => model.Posting.Description, htmlAttributes: new { @class = "col-lg-3 col-md-3 col-sm-8 col-xs-12" })
+                <label class="control-label col-lg-5 col-md-3 col-sm-8 col-xs-12">@ViewBag.Desc</label>
+            </div>
+        </div>
+       
+        <div class="form-group">
+            <div class="col-lg-6 col-md-6 col-sm-10 col-xs-12">
+                @Html.LabelFor(model => model.Comments, htmlAttributes: new { @class = "col-lg-3 col-md-3 col-sm-8 col-xs-12" })
+                <label class="control-label col-md-7">
+                    @Html.EditorFor(model => model.Comments, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Comments, "", new { @class = "text-danger" })
+                </label>
+            </div>
+        </div>
+    
+         <div class="form-group"> 
+            <div class="col-lg-6 col-md-6 col-sm-10 col-xs-12">
+            <label class="control-label col-lg-3 col-md-3 col-sm-8 col-xs-12">Current Documents in Profile</label>
+                <table>
+                    <tr>                 
+                       @{
+                            int cnt = 0;
+                            List<CommunityProject_ProjectUnity.ViewModels.AssignedUserFilesVM> files = ViewBag.Files;
+                            foreach (var file in files)
+                            {
+                                if (cnt++ % 3 == 0)
+                                {
+                                    @:</tr><tr>
+                                }
+                                @:<td>
+                                <br/>
+                                <label class="control-label">
+                                    <input type="checkbox" name="selectedFiles" value="@file.FileID" @(Html.Raw(file.Assigned ? "checked=\"checked\"" : "")) />
+                                    @file.FileName
+                                </label> @:&nbsp;&nbsp;
+                                    
+                                @: </td>
+                            }
+                            @:</tr>
+                            
+                        }
+                    </table>
+                </div>
+            </div>
+      
+        <br />
+        <div class="form-group">
+            
+            <div class="col-lg-5">
+      
+            <label class="control-label col-lg-3 col-md-3 col-sm-8 col-xs-12">Add New Documents</label>
+
+                <label class="control-label col-md-8">
+                    <input type="file" class="" name="Attachments" multiple="multiple" /><br />
+                </label>
+            </div>
+        </div>
+    </div>
+    </div>
+
+
+<br />
+        <div class="form-group">
+            <div class="col-md-offset-3 col-md-10">
+                <input type="submit" value="Create" class="btn btn-primary col-lg-2" />
+                @Html.ActionLink("Cancel", "Index", "Postings", null, new { @class = "btn btn-primary col-lg-2 col-md-offset-2" })
+            </div>
+        </div>
+}
+
+
+ 
+
+
+    @*<div>
+        @Html.ActionLink("Cancel", "Index", "Postings")
+    </div>*@
+
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    }

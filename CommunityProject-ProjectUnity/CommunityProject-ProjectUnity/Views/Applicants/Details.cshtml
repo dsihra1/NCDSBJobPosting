@@ -1,0 +1,90 @@
+﻿@model CommunityProject_ProjectUnity.Models.Applicant
+
+@{
+    ViewBag.Title = "Profile Details";
+}
+
+<h2>Applicant Details</h2>
+
+
+    <hr />
+    <div class="row">
+    <div class="col-md-6">
+    <dl class="dl-horizontal">
+       
+        <dt>
+            @Html.DisplayNameFor(model => model.FirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MiddleName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MiddleName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LastName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Phone)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Phone)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+        <dt>
+            <input type="submit" disabled="disabled" value="Uploaded Files" class="btn btn-link" />
+        </dt>
+        <dd>
+            @{
+        foreach (var f in Model.Files)
+        {
+            @:  @Html.ActionLink(f.fileName, "Download", new { id = f.ID }) <br />
+}
+            }
+        </dd>
+
+        </dl>
+        </div>
+        <div class="col-md-6">
+        <dl class="dl-horizontal">
+
+
+        <dt>
+            Applications Submitted
+        </dt>
+
+        <dd>
+           
+            @foreach (var a in Model.Applications)
+        {
+            @a.Posting.Name <br />
+        }
+        </dd>
+        
+    </dl>
+</div>
+</div>
+<p>
+    @Html.ActionLink("Edit Profile", "Edit", new { id = Model.ID }) |
+  
+</p>

@@ -1,0 +1,226 @@
+﻿@model CommunityProject_ProjectUnity.Models.Application
+
+@{
+    ViewBag.Title = "Details";
+}
+<div class="row">
+    <h2>Application Details</h2>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Applicant.FullName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Applicant.FullName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Posting.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Posting.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Comments)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Comments)
+        </dd>
+
+
+    </dl>
+    <div class="form-group">
+        <label class="control-label col-md-5"> Attached Documents:</label>
+        <div class="col-md-10">
+            @foreach (var doc in Model.UserFiles)
+            {
+
+                @doc.fileName @:&nbsp;
+                @Html.ActionLink("Download File", "Download", new { id = doc.ID })<br />
+
+            }
+            @foreach(var doc in ViewBag.Files)
+            {
+                 @doc.fileName @:&nbsp;
+                @Html.ActionLink("Download File", "Download", new { id = doc.ID })<br />
+            }
+        </div>
+    </div>
+    <br />
+
+    <div class="col-lg-5">
+        @{
+            var postype = Model.Posting.PositionType;
+            int matchcount = 0;
+            int skcount = 0;
+            if (postype == "Non-Teaching")
+            {
+
+                <label class="control-label col-md-7">Required Skills:</label>
+
+                <div class="well">
+                    @{
+
+                        foreach (var skill in Model.Posting.Skills)
+                        {
+
+                            <br />
+
+                            @skill.SkillName;
+                            skcount += 1;
+
+                        }
+                    }
+
+                </div>
+
+
+
+
+                <label class="control-label col-md-7">Applicant's Skills:</label>
+
+                <div class="well">
+                    @{
+                        int apcount = 0;
+                        foreach (var skill in Model.Applicant.Skills)
+                        {
+
+                            <br />
+                            @skill.SkillName;
+                            apcount += 1;
+
+                        }
+                    }
+
+                </div>
+
+
+                <label class="control-label col-md-7">Matching Skills:</label>
+                <div class="well">
+                    @{
+
+                        foreach (var skill in Model.Posting.Skills)
+                        {
+                            var pskillid = skill.ID;
+                            foreach (var apskill in Model.Applicant.Skills)
+                            {
+                                var apskillid = apskill.ID;
+                                if (apskillid == pskillid)
+                                {
+                                    <br />
+                                    @apskill.SkillName;
+                                    matchcount += 1;
+                                }
+                            }
+                        }
+                    }
+
+
+
+                </div>
+
+                        }
+                        else
+                        {
+          
+                                <label class="control-label col-md-7">Required Qualifications:</label>
+
+                                <div class="well">
+                                    @{
+
+                                        foreach (var skill in Model.Posting.Qualifications)
+                                        {
+
+                                            <br />
+
+                                            @skill.Name;
+                                            skcount += 1;
+
+                                        }
+                                    }
+
+                                </div>
+
+
+
+
+                                <label class="control-label col-md-7">Applicant's Qualifications:</label>
+
+                                <div class="well">
+                                    @{
+                                        int apcount = 0;
+                                        foreach (var skill in Model.Applicant.Qualifications)
+                                        {
+
+                                            <br />
+                                            @skill.Name;
+                                            apcount += 1;
+
+                                        }
+                                    }
+
+                                </div>
+
+
+                                <label class="control-label col-md-7">Matching Qualifications:</label>
+                                <div class="well">
+                                    @{
+
+                                        foreach (var skill in Model.Posting.Qualifications)
+                                        {
+                                            var pskillid = skill.ID;
+                                            foreach (var apskill in Model.Applicant.Qualifications)
+                                            {
+                                                var apskillid = apskill.ID;
+                                                if (apskillid == pskillid)
+                                                {
+                                                    <br />
+                                                    @apskill.Name;
+                                                    matchcount += 1;
+                                                }
+                                            }
+                                        }
+                                    }
+
+
+                                </div>
+                           
+
+                                }
+                                }
+                            </div>
+
+    <div class="col-md-5">
+       
+        @if (User.IsInRole("Admin"))
+        {
+            
+            int percent = (int)Math.Round((double)(100 * matchcount) / skcount); ;
+
+
+        
+            if (percent >= 50)
+            {
+
+                <img src="@Url.Content("~/Images/green.png")" alt="green" />
+            }
+            else
+            {
+                <img src="@Url.Content("~/Images/red.png")" alt="red" />
+            }
+                     <h2><label class="control-label"> Match Percentage:</label>@percent%<br /></h2>
+        }
+        
+
+    </div>
+</div>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+        @Html.ActionLink("Back to List", "Index")|
+        @Html.ActionLink("Download", "PrintPDF", new { id = Model.ID })
+
+    </p>

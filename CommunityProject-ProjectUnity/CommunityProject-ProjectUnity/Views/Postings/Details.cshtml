@@ -1,0 +1,192 @@
+﻿@model CommunityProject_ProjectUnity.Models.Posting
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Posting Details</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+       
+
+        
+
+        <dt>
+            @Html.DisplayNameFor(model => model.StartDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StartDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ClosingDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ClosingDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        @if (User.IsInRole("Admin"))
+    {
+        <dt>
+            @Html.DisplayNameFor(model => model.status)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.status)
+        </dd>
+
+}
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Schools)
+        </dt>
+
+
+                                            
+        
+            @foreach (var school in Model.Schools)
+                                                {
+        <dd>
+            @school.Shortname
+        </dd>
+                                                   
+                
+                                                }
+        
+        @*<dt>
+            @Html.DisplayNameFor(model => model.City.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.City.Name)
+        </dd>*@
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FTE)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FTE)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Openings)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Openings)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Salary)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Salary)
+        </dd>
+        @{ 
+            if(Model.JobStartDate!=DateTime.Parse("1900-01-01 00:00"))
+            {
+                <dt>
+            @Html.DisplayNameFor(model => model.JobStartDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.JobStartDate)
+        </dd>
+            }
+            if(Model.JobEndDate!=DateTime.Parse("1900-01-01 00:00"))
+            {
+                <dt>
+            @Html.DisplayNameFor(model => model.JobEndDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.JobEndDate)
+        </dd>
+            }
+
+
+        }
+        
+        @if (User.IsInRole("Admin"))
+    {
+        <dt>
+            @Html.DisplayNameFor(model => model.Applications)
+        </dt>
+        <dd>
+            @{
+            foreach (var app in Model.Applications)
+            {
+                @:  @app.Applicant.FormalName<br />
+}
+            }
+        </dd>
+}
+
+
+        <dt> <label>Required Skills/Qualifications</label></dt>
+        <dd>
+            <div class="form-group">
+                   
+                    <div class="col-lg-5 col-md-5 col-sm-10 col-xs-12">
+                        @if(Model.PositionType=="Non-Teaching")
+                        {
+                             <div class="well" id="SkillsList">
+                                 @foreach(var skill in Model.Skills)
+                                 {
+                                     @skill.SkillName<br />
+                                 }
+                             </div>
+                        }
+                        else
+                        {
+                            <div class="well" id="SkillsList">
+                                 @foreach(var qual in Model.Qualifications)
+                                 {
+                                     @qual.Name<br />
+                                 }
+                             </div>
+                        }
+
+                    </div>
+                </div>
+        </dd>
+    </dl>
+     
+</div>
+
+<div>
+    @if (User.IsInRole("Admin"))
+    {
+        @Html.ActionLink("Edit", "Edit", new { id = Model.ID})
+    }
+    </div>
+<div>
+    @if (!User.IsInRole("Admin"))
+    {
+        @Html.ActionLink("Apply to this Job", "Create", "Applications", new { id = Model.ID }, null)
+    }
+    </div>
+<div>
+    @Html.ActionLink("Back to Job Postings List", "Index")
+</div>

@@ -1,0 +1,139 @@
+﻿@model PagedList.IPagedList<CommunityProject_ProjectUnity.Models.Posting>
+@using PagedList.Mvc;
+
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = "Posting List";
+}
+<h2>Job Posting List</h2>
+
+<div>
+    @using (Html.BeginForm())
+    {
+        <p>
+            <div class="form-horizontal">
+                <button class="btn" type="button" data-toggle="collapse" id="filterToggle" data-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter">
+                    Filter/Search Postings
+                </button>
+                <div class="collapse @(ViewBag.Filtering)" id="collapseFilter">
+                    <div class="well">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label col-md-5">Search Position Name: </label>
+                                    <div class="col-md-7">
+                                        @Html.TextBox("searchName", null, new { @class = "form-control" })
+                                    </div>
+                                    <label class="control-label col-md-5">Search Posting Job Code: </label>
+                                    <div class="col-md-7">
+                                        @Html.TextBox("searchJobCode", null, new { @class = "form-control" })
+                                    </div>
+                                    <label class="control-label col-md-5">Search by  Status: </label>
+                                    <div class="col-md-7">
+                                        @Html.TextBox("searchStatus", null, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="col-md-5"></div>
+                                <div class="col-md-7">
+                                    <input type="submit" name="actionButton" value="Filter" class="btn btn-default" /> @Html.ActionLink("Clear", "Index")
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </p>
+        <p>
+            @Html.ActionLink("Create New", "Create")
+        </p>
+        <table class="table">
+            <tr>
+                <th>
+                    <input type="submit" name="actionButton" value="Job Posting" class="btn btn-link" />
+                </th>
+                <th>
+                    <input type="submit" name="actionButton" value="Number of Openings" class="btn btn-link" />
+                </th>
+                <th>
+                    <input type="submit" name="actionButton" value="Posting Closing Date" class="btn btn-link" />
+                </th>
+                <th>
+                    <input type="submit" name="actionButton" value="Job Start Date" class="btn btn-link" />
+                </th>
+
+                <th>
+                    <input type="submit" disabled="disabled" value="Status" class="btn btn-link" />
+                </th>
+                <th>
+                    <input type="submit" disabled="disabled" value="City" class="btn btn-link" />
+                </th>
+                <th>
+                    <input type="submit" disabled="disabled" value="School" class="btn btn-link" />
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Openings)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ClosingDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StartDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.status)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.City.Name)
+                    </td>
+                    @{
+                        var shortschool = item.School.Name.Substring(0, 5);
+                    }
+                    <td>
+                        @Html.DisplayFor(modelItem => item.School.Shortname)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.ID })
+
+                    </td>
+                    <td>
+                        @Html.ActionLink("Details", "Details", new { id = item.ID })
+                    </td>
+                </tr>
+            }
+
+        </table>
+        <span id="filterMessage" class="text-danger">@((Model.Count() == 0) ? "Zero postings found.  No records match your criteria." : "")</span>
+        <input type="hidden" name="sortDirection" value="@ViewBag.sortDirection" />
+        <input type="hidden" name="sortField" value="@ViewBag.sortField" />
+        <br />
+        @:Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+
+
+
+
+
+
+
+        @Html.PagedListPager(Model, page => Url.Action("Index",
+     new
+     {
+         page,
+         sortDirection = ViewBag.sortDirection,
+         sortField = ViewBag.sortField,
+         searchName = ViewBag.searchName
+     }))
+    }
+</div>

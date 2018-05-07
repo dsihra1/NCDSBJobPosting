@@ -1,0 +1,92 @@
+﻿
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = "Posting List";
+}
+<h2>Job Posting List</h2>
+
+
+   
+
+        <html>
+        <head>
+            <meta charset="utf-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                label {
+                    width: 180px;
+                    clear: left;
+                    text-align: right;
+                    padding-right: 10px;
+                    padding-top: 10px;
+                }
+
+                input, label {
+                    float: left;
+                }
+
+                select {
+                    clear: left;
+                    text-align: right;
+                    margin-top: 10px;
+                }
+            </style>
+        </head>
+
+        <body>
+
+           
+
+        <div class="form-horizontal">
+            <div class="well">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-5">Search Jobs</label>
+                            <div class="col-md-7">
+                                @Html.TextBox("searchName", null, new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-5">Select Location: </label>
+                            <select class="dropdown" name="searchlocation">
+                                <option value="Fort Erie">Fort Erie</option>
+                                <option value="Grimsby">Grimsby</option>
+                                <option value="Lincoln">Lincoln</option>
+                                <option value="Niagara Falls">Niagara Falls</option>
+                                <option value="Niagara-on-the-Lake">Niagara-on-the-Lake</option>
+                                <option value="Pelham">Pelham</option>
+                                <option value="Port Colborne">Port Colborne</option>
+                                <option value="St. Catharines">St. Catharines</option>
+                                <option value="Thorold">Thorold</option>
+                                <option value="Wainfleet">Wainfleet</option>
+                                <option value="Welland">Welland</option>
+                                <option value="West Lincoln">West Lincoln</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-5">Filter By School</label>
+                            <div class="col-md-7">
+                                @Html.TextBox("searchSchool", null, new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-5"></div>
+                    <div class="col-md-7">
+                        <input type="submit" name="actionButton" value="Filter" class="btn btn-default" />
+                        <button type="button" value="Clear" class="btn btn-default" />Clear
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+
+        </body>
+    </html>
