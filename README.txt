@@ -1,3 +1,17 @@
+Link to the project: http://projectunityfinal.azurewebsites.net/Account/Login?ReturnUrl=%2FPostings
+
+General Instructions/Admin Login
+************************************************************************************
+The roles we have for this application are admin and users.
+
+The admin login for this application is:
+	Username: admin1@outlook.com
+	Password: password
+
+The test user login for this application is:
+	Username: user1@outlook.com
+	Password: P@ssw0rd
+
 Description
 **********************************************************************************
 Project Unity is an application for users to be able to search, view, and apply to
@@ -16,18 +30,6 @@ Some special features included in this application are:
 - Batch processing through CSV Files and Datatable
 - Downloadable PDF of applications-extendable to pretty much any view in the application
 -Ability to Search using any criteria inside the datatables
-
-General Instructions/Admin Login
-************************************************************************************
-The roles we have for this application are admin and users.
-
-The admin login for this application is:
-	Username: admin1@outlook.com
-	Password: password
-
-The test user login for this application is:
-	Username: user1@outlook.com
-	Password: P@ssw0rd
 
 Programming Front End/Back End
 ************************************************************************************
